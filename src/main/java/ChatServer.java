@@ -1,6 +1,6 @@
 public class ChatServer {
     public static void main(String[] args) {
-        int port = 8887;
+        int port = 8080;
         ChatServerWebSocket webServer = new ChatServerWebSocket(port);
         webServer.start();
         System.out.println("Server will listen on port " + port);
