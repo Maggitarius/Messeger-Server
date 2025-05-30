@@ -15,7 +15,7 @@ public class ChatServerWebSocket extends WebSocketServer {
     private final Set<WebSocket> connections = Collections.synchronizedSet(new HashSet<>());
 
     public ChatServerWebSocket(int port) {
-        super(new InetSocketAddress(port));
+        super(new InetSocketAddress("0.0.0.0", port));
     }
 
     @Override
@@ -40,6 +40,11 @@ public class ChatServerWebSocket extends WebSocketServer {
             if ("init".equals(message.getType())) {
                 macToNick.put(message.getSenderMac(), message.getSenderName());
                 System.out.println("User initiated: " + message.getSenderName());
+                List<Message> history = messageStore.getLastMessages(100);
+                for (Message msg : history) {
+                    String json = mapper.writeValueAsString(msg);
+                    webSocket.send(json);
+                    }
                 return;
             }
 
